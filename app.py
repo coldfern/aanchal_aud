@@ -47,6 +47,12 @@ def transcribe_audio(audio_data, sample_rate):
 
     return transcription
 
+# Function to load audio using soundfile (alternative to librosa)
+def load_audio(file):
+    audio_data, sample_rate = sf.read(file)
+    return audio_data, sample_rate
+
+
 # Function to translate Hindi text to English
 def translate_to_english(text):
     translation = translator.translate(text, src='hi', dest='en')
@@ -81,7 +87,8 @@ def main():
         if uploaded_file:
             st.audio(uploaded_file, format="audio/wav")
             with io.BytesIO(uploaded_file.read()) as audio_io:
-                audio_data, sample_rate = librosa.load(audio_io, sr=16000)
+                audio_data, sample_rate = load_audio(audio_io)
+
 
     # If audio is available, process it
     if audio_data is not None:
